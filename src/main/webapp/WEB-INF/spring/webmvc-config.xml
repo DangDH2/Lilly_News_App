@@ -1,76 +1,80 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd                 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd                 http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
-                
-    <!-- The controllers are autodetected POJOs labeled with the @Controller annotation. -->
-    <context:component-scan base-package="com.springsource.lillyapp" use-default-filters="false">
-        <context:include-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
-    </context:component-scan>
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <!-- DispatcherServlet Context: defines this servlet's request-processing 
+        infrastructure -->
+
+    <!-- Enables the Spring MVC @Controller programming model -->
+    <annotation-driven />
+
+    <!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+        up static resources in the ${webappRoot}/resources directory -->
+    <resources mapping="/resources/**" location="/, classpath:/META-INF/web-resources/" />
+
+    <!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+        in the /WEB-INF/views directory -->
+    <beans:bean
+        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <beans:property name="prefix" value="/WEB-INF/views/" />
+        <beans:property name="suffix" value=".jsp" />
+    </beans:bean>
+
+
+
+    <!-- Hibernate 4 SessionFactory Bean definition -->
+    <beans:bean id="hibernate4AnnotatedSessionFactory"
+        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <beans:property name="dataSource" ref="dataSource" />
+        <beans:property name="annotatedClasses">
+            <beans:list>
+                <beans:value>com.journaldev.spring.model.Person</beans:value>
+            </beans:list>
+        </beans:property>
+        <beans:property name="hibernateProperties">
+            <beans:props>
+                <beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect
+                </beans:prop>
+                <beans:prop key="hibernate.show_sql">true</beans:prop>
+            </beans:props>
+        </beans:property>
+    </beans:bean>
+    <!-- 
+    <beans:bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource">
+        <property name="driverClassName" value="${database.driverClassName}"/>
+        <property name="url" value="#{ 'jdbc:postgresql://' + @dbUrl.getHost() + ':' + @dbUrl.getPort() + @dbUrl.getPath() }"/>
+        <property name="username" value="#{ @dbUrl.getUserInfo().split(':')[0] }"/>
+        <property name="password" value="#{ @dbUrl.getUserInfo().split(':')[1] }"/>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testOnReturn" value="true"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="timeBetweenEvictionRunsMillis" value="1800000"/>
+        <property name="numTestsPerEvictionRun" value="3"/>
+        <property name="minEvictableIdleTimeMillis" value="1800000"/>
+        <property name="validationQuery" value="SELECT version();"/>
+    </beans:bean>
+    <beans:bean class="java.net.URI" id="dbUrl">
+      <constructor-arg value="${DATABASE_URL}"/>
+    </beans:bean>
+     -->
     
-    <!-- Turns on support for mapping requests to Spring MVC @Controller methods
-         Also registers default Formatters and Validators for use across all @Controllers -->
-    <mvc:annotation-driven conversion-service="applicationConversionService"/>
+    <beans:bean id="personDAO" class="com.journaldev.spring.dao.PersonDAOImpl">
+        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </beans:bean>
+    <beans:bean id="personService" class="com.journaldev.spring.service.PersonServiceImpl">
+        <beans:property name="personDAO" ref="personDAO"></beans:property>
+    </beans:bean>
+    <context:component-scan base-package="com.journaldev.spring" />
     
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+    <beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </beans:bean>
 
-    <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources -->
-    <mvc:resources location="/, classpath:/META-INF/web-resources/" mapping="/resources/**"/>
-
-    <!-- Allows for mapping the DispatcherServlet to "/" by forwarding static resource 
-    requests to the container's default Servlet -->
-    <mvc:default-servlet-handler/>
-
-    <!-- Register "global" interceptor beans to apply to all registered HandlerMappings -->
-    <mvc:interceptors>
-        <bean class="org.springframework.web.servlet.theme.ThemeChangeInterceptor"/>
-        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="lang"/>
-    </mvc:interceptors>
-
-    <!-- Selects a static view for rendering without the need for an explicit controller -->
-    <mvc:view-controller path="/" view-name="index"/>
-    <mvc:view-controller path="/uncaughtException"/>
-    <mvc:view-controller path="/resourceNotFound"/>
-    <mvc:view-controller path="/dataAccessFailure"/>
-
-    <!-- Resolves localized messages*.properties and application.properties files in the application to allow for internationalization. 
-    The messages*.properties files translate Roo generated messages which are part of the admin interface, the 
-    application.properties resource bundle localizes all application specific messages such as entity names and menu items. -->
-    <bean class="org.springframework.context.support.ReloadableResourceBundleMessageSource" id="messageSource" p:basenames="WEB-INF/i18n/messages,WEB-INF/i18n/application" p:fallbackToSystemLocale="false"/>
-
-    <!-- Store preferred language configuration in a cookie -->
-    <bean class="org.springframework.web.servlet.i18n.CookieLocaleResolver" id="localeResolver" p:cookieName="locale"/>
-
-    <!-- Resolves localized <theme_name>.properties files in the classpath to allow for theme support -->
-    <bean class="org.springframework.ui.context.support.ResourceBundleThemeSource" id="themeSource"/>
-
-    <!-- Store preferred theme configuration in a cookie -->
-    <bean class="org.springframework.web.servlet.theme.CookieThemeResolver" id="themeResolver" p:cookieName="theme" p:defaultThemeName="standard"/>
-
-    <!-- This bean resolves specific types of exceptions to corresponding logical - view names for error views. 
-    The default behaviour of DispatcherServlet - is to propagate all exceptions to the servlet 
-    container: this will happen - here with all other types of exceptions. -->
-    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver" p:defaultErrorView="uncaughtException">
-        <property name="exceptionMappings">
-            <props>
-                <prop key=".DataAccessException">dataAccessFailure</prop>
-                <prop key=".NoSuchRequestHandlingMethodException">resourceNotFound</prop>
-                <prop key=".TypeMismatchException">resourceNotFound</prop>
-                <prop key=".MissingServletRequestParameterException">resourceNotFound</prop>
-            </props>
-        </property>
-    </bean>
-
-    <!-- Enable this for integration of file upload functionality -->
-    <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver"/>
-<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" id="tilesViewResolver">
-    <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
-  </bean>
-    <bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer" id="tilesConfigurer">
-    <property name="definitions">
-      <list>
-        <value>/WEB-INF/layouts/layouts.xml</value>
-        <!-- Scan views directory for Tiles configurations -->
-        <value>/WEB-INF/views/**/views.xml</value>
-      </list>
-    </property>
-  </bean>
-<bean class="com.springsource.lillyapp.web.ApplicationConversionServiceFactoryBean" id="applicationConversionService"/>
-</beans>
+</beans:beans>
