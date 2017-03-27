@@ -48,7 +48,7 @@ public class NewsDAOImpl implements NewsDAO {
 	@Override
 	public News getNewsId(String id) {
 		Session session = this.sessionFactory.getCurrentSession();
-		return null;
+		return new News();
 	}
 
 	@Override
