@@ -73,6 +73,7 @@
       </list>
     </property>
   </bean>
+  <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
   <context:annotation-config/>
     <bean id="newsDAO" class="com.springsource.lillyapp.dao.NewsDAOImpl">
         <!-- <property name="emf" ref="entityManagerFactory" />  -->
