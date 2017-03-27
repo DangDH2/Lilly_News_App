@@ -47,13 +47,13 @@ public class NewsDAOImpl implements NewsDAO {
 
 	@Override
 	public News getNewsId(String id) {
-		// TODO Auto-generated method stub
+		Session session = this.sessionFactory.getCurrentSession();
 		return null;
 	}
 
 	@Override
 	public void removeNews(String id) {
-		// TODO Auto-generated method stub
+		Session session = this.sessionFactory.getCurrentSession();
 
 	}
 
