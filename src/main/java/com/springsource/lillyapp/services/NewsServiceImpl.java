@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.springsource.lillyapp.dao.NewsDAO;
+import com.springsource.lillyapp.dao.NewsDAOImpl;
 import com.springsource.lillyapp.domain.News;
 
 @Service
@@ -28,6 +29,9 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	@Transactional
 	public List<News> listNewsByType(String type) {
+		if (newsDAO == null) {
+			newsDAO = new NewsDAOImpl();
+		}
 		return newsDAO.listNews(Integer.parseInt(type));
 	}
 

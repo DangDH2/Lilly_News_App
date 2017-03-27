@@ -1,10 +1,10 @@
 package com.springsource.lillyapp.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
@@ -29,9 +29,16 @@ public class NewsDAOImpl implements NewsDAO {
 
 	@Override
 	public List<News> listNews(int type) {
-		Query query = em.createQuery("from Product as p where p.category = :category");
+		List<News> lsNews = new ArrayList<News>();
+		News n = new News();
+		n.setId("1");
+		n.setTitle("title 1");
+		lsNews.add(n);
+		// Query query = em.createQuery("from Product as p where p.category =
+		// :category");
 		// query.setParameter("category", category);
-		return query.getResultList();
+		// return query.getResultList();
+		return lsNews;
 	}
 
 	@Override
