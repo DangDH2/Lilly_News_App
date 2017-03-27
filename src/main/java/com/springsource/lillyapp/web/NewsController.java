@@ -25,9 +25,18 @@ public class NewsController {
 		if (newsService == null) {
 			newsService = new NewsServiceImpl();
 		}
-		System.out.println("DANG HO DANG ");
+		System.out.println("listNewsByType + " + type);
 		model.addAttribute("lsNews", this.newsService.listNewsByType(type));
-		System.out.println("DANG HO DANG ");
 		return "news/list";
+	}
+
+	@RequestMapping(value = "rss", method = RequestMethod.GET)
+	public String getRssNews(Model model) {
+		if (newsService == null) {
+			newsService = new NewsServiceImpl();
+		}
+		model.addAttribute("rss",
+		        "<root><parent><child>1</child><child>2</child><child>3</child></parent><parent/></root>");
+		return "news/rss";
 	}
 }
