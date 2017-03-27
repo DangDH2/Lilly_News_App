@@ -43,4 +43,7 @@ public class NewsServiceImpl implements NewsService {
 		newsDAO.removeNews(id);
 	}
 
+	public void setNewsDAO(NewsDAO newsDAO) {
+		this.newsDAO = newsDAO;
+	}
 }
