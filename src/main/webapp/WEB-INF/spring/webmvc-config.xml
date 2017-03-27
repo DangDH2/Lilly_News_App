@@ -80,7 +80,8 @@
     <bean id="newsService" class="com.springsource.lillyapp.services.NewsServiceImpl">
         <property name="newsDAO" ref="newsDAO"></property>
     </bean>
+    <!-- 
     <context:component-scan base-package="com.springsource.lillyapp" />
-    
+     -->
     <bean class="com.springsource.lillyapp.web.ApplicationConversionServiceFactoryBean" id="applicationConversionService"/>
 </beans>
