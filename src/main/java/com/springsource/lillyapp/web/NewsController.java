@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springsource.lillyapp.domain.News;
 import com.springsource.lillyapp.services.NewsService;
+import com.springsource.lillyapp.services.NewsServiceImpl;
 
 @RequestMapping("/news")
 @Controller
@@ -21,7 +22,12 @@ public class NewsController {
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public String getListnews(@RequestParam(value = "type", required = false, defaultValue = "1") String type,
 	        Model model) {
+		if (newsService == null) {
+			newsService = new NewsServiceImpl();
+		}
+		System.out.println("DANG HO DANG ");
 		model.addAttribute("lsNews", this.newsService.listNewsByType(type));
+		System.out.println("DANG HO DANG ");
 		return "news/list";
 	}
 }
