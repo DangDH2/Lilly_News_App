@@ -4,4 +4,7 @@
 	<definition extends="news_layout" name="news/top">
 	    <put-attribute name="body" value="/WEB-INF/views/news/top.jspx"/>
 	</definition>
+    <definition extends="news_layout" name="news/lista">
+        <put-attribute name="body" value="/WEB-INF/views/news/listnews1.jspx"/>
+    </definition>
 </tiles-definitions>
