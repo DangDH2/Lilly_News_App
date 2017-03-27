@@ -15,16 +15,14 @@ public class NewsServiceImpl implements NewsService {
 
 	@Override
 	@Transactional
-	public void addNews(News p) {
-		// TODO Auto-generated method stub
-
+	public void addNews(News n) {
+		newsDAO.addNews(n);
 	}
 
 	@Override
 	@Transactional
-	public void updateNews(News p) {
-		// TODO Auto-generated method stub
-
+	public void updateNews(News n) {
+		newsDAO.updateNews(n);
 	}
 
 	@Override
@@ -36,15 +34,13 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	@Transactional
 	public News getNewsById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return newsDAO.getNewsId(id);
 	}
 
 	@Override
 	@Transactional
 	public void removeNews(String id) {
-		// TODO Auto-generated method stub
-
+		newsDAO.removeNews(id);
 	}
 
 }
