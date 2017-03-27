@@ -34,7 +34,7 @@ public class NewsDAOImpl implements NewsDAO {
 
 	@Override
 	public List<News> listNews(int type) {
-		Session session = this.sessionFactory.getCurrentSession();
+		// Session session = this.sessionFactory.getCurrentSession();
 		// List<News> newsList = session.createQuery("from Account").list();
 		// return newsList;
 		List<News> newsList = new ArrayList<News>();
