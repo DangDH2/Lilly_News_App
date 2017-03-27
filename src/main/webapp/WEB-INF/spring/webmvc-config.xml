@@ -75,7 +75,7 @@
   </bean>
   
     <bean id="newsDAO" class="com.springsource.lillyapp.dao.NewsDAOImpl">
-        <property name="sessionFactory" ref="entityManagerFactory" />
+        <property name="sessionFactory" ref="sessionFactory" />
     </bean>
     
     <bean id="newsService" class="com.springsource.lillyapp.services.NewsServiceImpl">
