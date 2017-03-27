@@ -73,9 +73,9 @@
       </list>
     </property>
   </bean>
-  
+  <context:annotation-config/>
     <bean id="newsDAO" class="com.springsource.lillyapp.dao.NewsDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory" />
+        <!-- <property name="emf" ref="entityManagerFactory" />  -->
     </bean>
     
     <bean id="newsService" class="com.springsource.lillyapp.services.NewsServiceImpl">
