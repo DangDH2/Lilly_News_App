@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import com.springsource.lillyapp.domain.News;
 
+@Repository
 public class NewsDAOImpl implements NewsDAO {
 
 	private SessionFactory sessionFactory;

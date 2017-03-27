@@ -10,7 +10,7 @@ public interface NewsService {
 
 	public void updateNews(News p);
 
-	public List<News> listNewsByType(int type);
+	public List<News> listNewsByType(String type);
 
 	public News getNewsById(String id);
 
