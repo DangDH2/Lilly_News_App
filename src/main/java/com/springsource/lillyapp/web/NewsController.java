@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.springsource.lillyapp.domain.News;
 import com.springsource.lillyapp.services.NewsService;
@@ -17,10 +18,10 @@ import com.springsource.lillyapp.services.NewsService;
 public class NewsController {
 	private NewsService newsService;
 
-	@RequestMapping(value = "/news/lista", method = RequestMethod.GET)
-	public String listnewsTypeA(Model model) {
+	@RequestMapping(value = "list", method = RequestMethod.GET)
+	public String getListnews(@RequestParam("type") String type, Model model) {
 		model.addAttribute("news", new News());
 		model.addAttribute("lsNews", this.newsService.listNewsByType(1));
-		return "news";
+		return "news/list";
 	}
 }
