@@ -7,7 +7,7 @@
     <definition extends="news_layout" name="news/list">
         <put-attribute name="body" value="/WEB-INF/views/news/list.jspx"/>
     </definition>
-    <definition name="news/rss">
+    <definition extends="rss_layout" name="news/rss">
         <put-attribute name="body" value="/WEB-INF/views/news/rss.jspx"/>
     </definition>
 </tiles-definitions>

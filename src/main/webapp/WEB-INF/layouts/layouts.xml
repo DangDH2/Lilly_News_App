@@ -17,4 +17,8 @@
   </definition>
   <definition name="news_layout" template="/WEB-INF/layouts/news.jspx">
   </definition>
+  <definition name="rss_layout" template="/WEB-INF/layouts/rss.jspx">
+  </definition>
+  
+  
 </tiles-definitions>
