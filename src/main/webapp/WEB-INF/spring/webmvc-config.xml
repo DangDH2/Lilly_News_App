@@ -61,9 +61,9 @@
 
     <!-- Enable this for integration of file upload functionality -->
     <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver"/>
-<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" id="tilesViewResolver">
-    <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
-  </bean>
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" id="tilesViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
+    </bean>
     <bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer" id="tilesConfigurer">
     <property name="definitions">
       <list>
@@ -73,5 +73,14 @@
       </list>
     </property>
   </bean>
-<bean class="com.springsource.lillyapp.web.ApplicationConversionServiceFactoryBean" id="applicationConversionService"/>
+  
+    <bean id="newsDAO" class="com.springsource.lillyapp.dao.NewsDAOImpl">
+        <property name="sessionFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="newsService" class="com.springsource.lillyapp.services.NewsServiceImpl">
+        <property name="newsDAO" ref="newsDAO"></property>
+    </bean>
+    <context:component-scan base-package="com.springsource.lillyapp" />
+    
+    <bean class="com.springsource.lillyapp.web.ApplicationConversionServiceFactoryBean" id="applicationConversionService"/>
 </beans>
